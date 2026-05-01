@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import AudioVisualizer from "./AudioVisualizer";
 
-const API = "http://localhost:5005/api";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5005/api";
 
 function getSessionId() {
   if (typeof window === "undefined") return "server";

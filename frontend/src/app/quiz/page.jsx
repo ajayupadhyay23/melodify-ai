@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 const Scene3D = dynamic(() => import("@/components/Scene3D"), { ssr: false });
 
-const API = "http://localhost:5005/api";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5005/api";
 
 const TOPICS = ["Major Scales", "Minor Scales", "Chords", "Intervals", "Rhythm", "Key Signatures", "Music Notes"];
 const LEVELS = ["Beginner", "Intermediate", "Advanced"];
