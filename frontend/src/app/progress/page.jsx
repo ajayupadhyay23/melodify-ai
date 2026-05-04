@@ -23,10 +23,16 @@ export default function ProgressPage() {
   const [globalStats, setGlobalStats] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
     if (!authLoading && !user) {
       router.push("/login");
       return;
@@ -74,6 +80,8 @@ export default function ProgressPage() {
     { id: "quizzes", label: "Quiz Results", icon: "🎯" },
     { id: "platform", label: "Platform Stats", icon: "🌍" },
   ];
+
+  if (!mounted) return null;
 
   return (
     <>

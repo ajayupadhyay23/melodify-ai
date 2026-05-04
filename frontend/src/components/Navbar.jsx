@@ -94,6 +94,7 @@ export default function Navbar() {
       {/* Nav links */}
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <NavLink label="Home" href="/" />
+        <NavLink label="Piano 🎹" href="/piano" />
         <NavLink label="Quiz 🎯" href="/quiz" />
         <NavLink label="Progress 📊" href="/progress" />
 
@@ -178,29 +179,49 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
         ) : (
-          <motion.button
-            onClick={() => router.push("/login")}
-            whileHover={{ scale: 1.05, y: -1 }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              marginLeft: "8px",
-              padding: "9px 22px",
-              borderRadius: "10px",
-              border: "none",
-              background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
-              color: "#fff",
-              fontSize: "13px",
-              fontWeight: 600,
-              fontFamily: "'Inter', sans-serif",
-              cursor: "pointer",
-              transition: "all 0.3s",
-              boxShadow: "0 4px 15px rgba(139, 92, 246, 0.3)",
-              display: "inline-flex",
-              alignItems: "center",
-            }}
-          >
-            Sign In
-          </motion.button>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "8px" }}>
+            <motion.button
+              onClick={() => router.push("/register")}
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                padding: "9px 18px",
+                borderRadius: "10px",
+                border: "1px solid rgba(139,92,246,0.35)",
+                background: "rgba(139,92,246,0.08)",
+                color: "#c084fc",
+                fontSize: "13px",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                cursor: "pointer",
+                transition: "all 0.3s",
+              }}
+            >
+              Register
+            </motion.button>
+            <motion.button
+              onClick={() => router.push("/login")}
+              whileHover={{ scale: 1.05, y: -1 }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                padding: "9px 22px",
+                borderRadius: "10px",
+                border: "none",
+                background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+                color: "#fff",
+                fontSize: "13px",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                cursor: "pointer",
+                transition: "all 0.3s",
+                boxShadow: "0 4px 15px rgba(139, 92, 246, 0.3)",
+                display: "inline-flex",
+                alignItems: "center",
+              }}
+            >
+              Sign In
+            </motion.button>
+          </div>
         )}
       </div>
     </motion.nav>

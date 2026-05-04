@@ -44,22 +44,14 @@ export default function QuizPage() {
   const [gameOver, setGameOver] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
   const [savingScore, setSavingScore] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [error, setError] = useState(null);
   const { user } = useAuth();
   const TOTAL_QUESTIONS = 5;
 
   useEffect(() => {
-    if (user?.user_metadata?.full_name) {
-      setPlayerName(user.user_metadata.full_name);
-      setNameSet(true);
-    } else {
-      const name = getPlayerName();
-      if (name && name !== "Anonymous") {
-        setPlayerName(name);
-        setNameSet(true);
-      }
-    }
-    fetchLeaderboard();
-  }, [user]);
+    setMounted(true);
+  }, []);
 
   const fetchLeaderboard = async () => {
     try {
@@ -72,14 +64,45 @@ export default function QuizPage() {
     setLoading(true);
     setSelected(null);
     setShowExplanation(false);
+    setError(null);
     try {
       const res = await axios.post(`${API}/ai/quiz`, { level, topic });
-      if (res.data.success) setQuiz(res.data.quiz);
-    } catch {
+      if (res.data.success && res.data.quiz) {
+        setQuiz(res.data.quiz);
+      } else {
+        setError(res.data.error || "The AI is currently busy composing a question. Please try again!");
+      }
+    } catch (err) {
+      console.error("Quiz Fetch Error:", err);
+      const detail = err.response?.data?.details || err.message;
+      setError(detail.includes("API key") 
+        ? "The AI service is temporarily resting. Please try again in a moment." 
+        : "Music theory generator is temporarily offline. Let's try again!");
       setQuiz(null);
     }
     setLoading(false);
   }, [level, topic]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const checkUser = () => {
+      if (user?.user_metadata?.full_name) {
+        setPlayerName(user.user_metadata.full_name);
+        setNameSet(true);
+        if (!quiz && !loading && !gameOver) fetchQuiz();
+      } else {
+        const name = getPlayerName();
+        if (name && name !== "Anonymous") {
+          setPlayerName(name);
+          setNameSet(true);
+        }
+      }
+      fetchLeaderboard();
+    };
+
+    checkUser();
+  }, [user, mounted, fetchQuiz]);
 
   const handleStart = () => {
     if (!playerName.trim() && !user) return;
@@ -141,6 +164,8 @@ export default function QuizPage() {
 
   const scorePercent = Math.round((score / TOTAL_QUESTIONS) * 100);
   const scoreColor = scorePercent >= 80 ? "#06d6a0" : scorePercent >= 50 ? "#f59e0b" : "#f43f5e";
+
+  if (!mounted) return null;
 
   return (
     <>
@@ -251,6 +276,17 @@ export default function QuizPage() {
                       className="glass-card" style={{ textAlign: "center", padding: "60px", minHeight: "300px", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "16px" }}>
                       <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }} style={{ fontSize: "36px" }}>🎵</motion.div>
                       <p style={{ color: "var(--text-secondary)" }}>Generating question…</p>
+                    </motion.div>
+                  )}
+
+                  {error && !loading && (
+                    <motion.div key="error" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                      className="glass-card" style={{ textAlign: "center", padding: "40px", border: "1px solid rgba(244,63,94,0.3)" }}>
+                      <div style={{ fontSize: "40px", marginBottom: "16px" }}>⚠️</div>
+                      <p style={{ color: "#fca5a5", marginBottom: "20px" }}>{error}</p>
+                      <motion.button onClick={fetchQuiz} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="btn-premium">
+                        Try Again
+                      </motion.button>
                     </motion.div>
                   )}
 

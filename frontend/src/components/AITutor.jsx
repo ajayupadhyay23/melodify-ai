@@ -76,7 +76,12 @@ export default function AITutor() {
     const q = customQuestion || question;
     if (!q.trim()) return;
 
-    const userMsg = { role: "user", text: q, id: Date.now() };
+    const userMsg = { 
+      role: "user", 
+      text: q, 
+      id: Date.now(), 
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) 
+    };
     setMessages((prev) => [...prev, userMsg]);
     setQuestion("");
     setLoading(true);
@@ -90,6 +95,7 @@ export default function AITutor() {
         role: "ai",
         text: response.data.reply,
         id: Date.now() + 1,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
       setMessages((prev) => [...prev, aiMsg]);
 
@@ -100,12 +106,13 @@ export default function AITutor() {
         ai_reply: response.data.reply,
         topic: detectTopic(q),
       }).catch(() => {});
-    } catch {
+    } catch (err) {
       const errMsg = {
         role: "ai",
-        text: "I had trouble processing that. Let me try again — please ask once more!",
+        text: "I had trouble connecting to the server. Please check if the backend is running and try again!",
         id: Date.now() + 1,
         isError: true,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
       setMessages((prev) => [...prev, errMsg]);
     }
@@ -376,11 +383,7 @@ export default function AITutor() {
                   padding: "0 8px",
                 }}
               >
-                {msg.role === "user" ? "You" : "🎵 AI Tutor"} •{" "}
-                {new Date().toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                {msg.role === "user" ? "You" : "🎵 AI Tutor"} • {msg.timestamp}
               </span>
             </motion.div>
           ))}
