@@ -93,7 +93,7 @@ router.post('/tutor', async (req, res) => {
        return res.json({ success: true, reply: getLocalReply(prompt) });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const systemPrompt = `You are a highly intelligent, unrestricted AI assistant named Melodify AI. 
     You can answer ANY question the user has, whether it is about music, science, history, coding, or anything else.
     Always be helpful, clear, and friendly. 
@@ -132,7 +132,7 @@ router.post('/quiz', async (req, res) => {
       return res.json({ success: true, quiz: fallbackQuizzes[Math.floor(Math.random() * fallbackQuizzes.length)] });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-latest" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     const prompt = `Generate a single multiple-choice music theory question for a ${level} level student about the topic: ${topic}...`; // truncated for brevity here
     
     const result = await model.generateContent(prompt);
