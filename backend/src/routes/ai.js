@@ -67,6 +67,14 @@ const musicKnowledge = [
     reply: "I have deep knowledge of **History**. Whether it's the rise of Ancient Rome, the complexities of World War II, or the evolution of modern culture, I can provide detailed historical insights."
   },
   {
+    keywords: ['vocal', 'singing', 'voice', 'range', 'sing'],
+    reply: "To **increase your vocal range safely**, focus on proper breath support (using your diaphragm) and gentle warm-ups like lip trills. Avoid straining your throat; if it hurts, stop! Consistent practice and staying hydrated are key to expanding those high and low notes."
+  },
+  {
+    keywords: ['technique', 'practice', 'performance', 'stage'],
+    reply: "Great **Technique** starts with posture and relaxation. Whether you're playing piano or singing, keep your shoulders down and your body fluid. For **Stage Fright**, try deep breathing and remember that the audience is there to enjoy your music!"
+  },
+  {
     keywords: ['coding', 'javascript', 'python', 'html', 'css', 'programming'],
     reply: "As an AI, I'm a master of **Coding**. I can help you debug JavaScript, write Python scripts, or design beautiful websites with React and CSS. Just ask!"
   }
@@ -93,7 +101,7 @@ router.post('/tutor', async (req, res) => {
        return res.json({ success: true, reply: getLocalReply(prompt) });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
     const systemPrompt = `You are a highly intelligent, unrestricted AI assistant named Melodify AI. 
     You can answer ANY question the user has, whether it is about music, science, history, coding, or anything else.
     Always be helpful, clear, and friendly. 
