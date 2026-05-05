@@ -267,8 +267,8 @@ export default function AITutor() {
                   margin: "0 auto 24px",
                 }}
               >
-                Welcome! I'm your AI music theory tutor. Ask me anything about
-                notes, scales, chords, rhythm, and more.
+                Welcome! I'm your Universal AI Tutor. I can help you with 
+                music, science, history, coding, or anything else you're curious about.
               </p>
 
               {/* Suggested questions */}
@@ -438,7 +438,7 @@ export default function AITutor() {
             onKeyDown={handleKeyDown}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            placeholder="Ask about music theory..."
+            placeholder="Ask me anything (Music, Science, History, Coding...)"
             style={{
               flex: 1,
               border: "none",
